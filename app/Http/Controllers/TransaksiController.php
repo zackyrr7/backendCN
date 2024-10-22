@@ -5,12 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 
 class TransaksiController extends Controller
 {
     public function indexUser($user_id)
     {
-        $data = DB::table('transaksi')->where('user_id', $user_id)->get();
+        $bulanSekarang = Carbon::now()->format('m');
+        $data = DB::select("SELECT a.nama,a.total,a.tanggal, c.icon,d.warna,b.tipe FROM transaksi as a JOIN
+                            jenis as b on a.jenis_id = b.jenis_id JOIN
+                            icons as c ON b.icon = c.id JOIN
+                            warnas as d ON b.warna = d.warna_id
+                            WHERE a.user_id = ? and MONTH(a.tanggal) = ?
+                            ORDER BY a.tanggal", [$user_id, $bulanSekarang]);
         return response()->json($data);
     }
 

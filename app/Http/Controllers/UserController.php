@@ -166,13 +166,13 @@ class UserController extends Controller
         // $persen = ($top[0]->total_pengeluaran / $top[0]->bulanan) * 100;
 
 
-        $recent = DB::select("SELECT a.nama,a.tanggal,a.total,b.icon,b.warna,b.tipe FROM transaksi as a 
-        JOIN jenis as b on a.jenis_id = b.jenis_id and a.user_id  = b.user_id
-        join icons as c on b.icon = c.id
-        JOIN warnas as d on b.warna = d.warna_id
-        where a.user_id = ?
-        ORDER BY a.tanggal DESC
-        LIMIT 5", [$user_id]);
+        $recent = DB::select("SELECT a.nama,a.tanggal,a.total,c.icon,d.warna,b.tipe FROM transaksi as a 
+                    JOIN jenis as b on a.jenis_id = b.jenis_id and a.user_id  = b.user_id
+                    join icons as c on b.icon = c.id
+                    JOIN warnas as d on b.warna = d.warna_id
+                    where a.user_id = ? 
+                    ORDER BY a.tanggal DESC
+                    LIMIT 5", [$user_id]);
 
         $goal = DB::select("SELECT 
                 a.goal_id,

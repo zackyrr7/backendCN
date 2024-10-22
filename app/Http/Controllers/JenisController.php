@@ -12,7 +12,10 @@ class JenisController extends Controller
 {
     public function index($id)
     {
-        $jenis = DB::table('jenis')->select('*')->where('user_id', $id)->get();
+        $jenis = DB::select("SELECT a.jenis_id,a.nama,a.tipe,a.user_id,b.icon,c.warna FROM jenis as a
+                JOIN icons as b on a.icon = b.id
+                JOIN warnas as c on a.warna = c.warna_id
+                WHERE a.user_id = ?", [$id]);
         return response()->json($jenis);
     }
 
